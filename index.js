@@ -3,18 +3,11 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const cors = require('cors');
 
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
-
-ffmpeg.setFfmpegPath(ffmpegInstaller.path);
-
 dotenv.config();
 const port = process.env.PORT;
 
-
 const app = express();
 app.use(cors());
-
 
 app.get('/output/:id', (req, res) => {
   const filePath = '.' + req.url;
