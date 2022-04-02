@@ -1,0 +1,24 @@
+{
+  "name": "videohttpstreamapp",
+  "version": "1.0.0",
+  "description": "Video Http Stream Nodejs",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "author": "David Kern",
+  "license": "ISC",
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
