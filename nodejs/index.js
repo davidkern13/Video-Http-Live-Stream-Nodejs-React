@@ -3,13 +3,19 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const cors = require('cors');
 
+const createLiveFile = require('./createLiveFile.js');
+const cron = require('./cron.js');
+
 dotenv.config();
 const port = process.env.PORT;
 
 const app = express();
 app.use(cors());
 
-app.get('/output/:id', (req, res) => {
+createLiveFile();
+cron.start();
+
+app.get('/vod/:id', (req, res) => {
   const filePath = '.' + req.url;
 
   if (filePath.includes('.ts')) {
@@ -19,7 +25,7 @@ app.get('/output/:id', (req, res) => {
     fs.readFile(filePath, function (error, content) {
       res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
       if (error) {
-        if (error.code == 'ENOENT') {
+        if (error.code === 'ENOENT') {
           res.end(content, 'utf-8');
         }
         else {
@@ -28,10 +34,27 @@ app.get('/output/:id', (req, res) => {
           res.end();
         }
       }
-      res.end(content, 'utf-8'); 
+      res.end(content, 'utf-8');
     });
   }
+});
 
+app.get('/live/:id', (req, res) => {
+  const filePath = '.' + req.url;
+  fs.readFile(filePath, function (error, content) {
+    res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
+    if (error) {
+      if (error.code === 'ENOENT') {
+        res.end(content, 'utf-8');
+      }
+      else {
+        res.writeHead(500);
+        res.end('Sorry, check with the site admin for error: ' + error.code + ' ..\n');
+        res.end();
+      }
+    }
+    res.end(content, 'utf-8');
+  });
 });
 
 app.listen(port, () => {
