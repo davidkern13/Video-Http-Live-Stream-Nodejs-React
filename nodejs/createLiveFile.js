@@ -7,11 +7,11 @@ const initLiveData = '#EXTM3U\n' +
   '#EXT-X-MEDIA-SEQUENCE:0\n' +
   '#EXTINF:10\n' +
   'http://localhost:8000/vod/output0.ts\n' +
-  '#EXTINF:10\n' +
+  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
   'http://localhost:8000/vod/output1.ts\n' +
-  '#EXTINF:10\n' +
+  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
   'http://localhost:8000/vod/output2.ts\n' +
-  '#EXTINF:10\n' +
+  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
   'http://localhost:8000/vod/output3.ts';
 
 module.exports = function() {

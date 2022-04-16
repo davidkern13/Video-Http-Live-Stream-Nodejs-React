@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const cors = require('cors');
-
+const numeral = require('numeral');
 const createLiveFile = require('./createLiveFile.js');
 const cron = require('./cron.js');
 
@@ -56,6 +56,25 @@ app.get('/live/:id', (req, res) => {
     res.end(content, 'utf-8');
   });
 });
+
+// setInterval(() => {
+//   // 1. Force garbage collection every time this function is called
+//   // try {
+//    console.log(global);
+//   // } catch (e) {
+//   //   console.log("You must run program with 'node --expose-gc index.js' or 'npm start'");
+//   //   process.exit();
+//   // }
+//   const { rss, heapUsed, heapTotal } = process.memoryUsage();
+//   console.log(
+//     'rss',
+//     numeral(rss).format('0.0 ib'),
+//     'heapUsed',
+//     numeral(heapUsed).format('0.0 ib'),
+//     'heapTotal',
+//     numeral(heapTotal).format('0.0 ib'),
+//   );
+// }, 5000);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);

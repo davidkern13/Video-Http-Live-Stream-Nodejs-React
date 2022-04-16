@@ -30,28 +30,24 @@ module.exports = new CronJob('*/30 * * * * *', function () {
 
         const indexTs = parseInt(subStr[1]);
 
-        if (indexTs === 15) {
-            createLiveFile();
-        }else{
-            const newIndexTs = indexTs + 3;
+        const newIndexTs = indexTs + 3;
 
-            for (let i = indexTs; i <= newIndexTs; i++) {
-                if (i === newIndexTs) {
-                    data += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
-                } else {
-                    data += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
-                }
+        for (let i = indexTs; i <= newIndexTs; i++) {
+            if (i === newIndexTs) {
+                data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
+            } else {
+                data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
             }
-    
-            fs.writeFile(file, data, err => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-                console.log('file written successfully');
-            });
         }
 
+        fs.writeFile(file, data, err => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            console.log('file written successfully');
+        });
+    
     });
 
 });

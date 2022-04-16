@@ -5,7 +5,7 @@ const Home = () => {
 
     return (
         <>
-            <Live />
+            {/* <Live /> */}
             <Vod />
         </>
     )

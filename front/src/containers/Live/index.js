@@ -11,6 +11,7 @@ const Live = () => {
         responsive: true,
         liveui: true,
         fluid: true,
+        muted:true,
         sources: [{
             src: 'http://localhost:8000/live/live.m3u8',
             type: 'application/x-mpegURL'
