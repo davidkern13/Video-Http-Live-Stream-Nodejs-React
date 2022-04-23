@@ -15,6 +15,9 @@ app.use(cors());
 createLiveFile();
 cron.start();
 
+//static images vod
+app.use('/vod/images',express.static(__dirname + '/static/vod'));
+
 app.get('/vod/:id', (req, res) => {
   const filePath = '.' + req.url;
 
