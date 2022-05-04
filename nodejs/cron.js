@@ -3,6 +3,7 @@ const CronJob = require('cron').CronJob;
 const fs = require('fs');
 const createLiveFile = require('./createLiveFile.js');
 let lengthFilesTs = null;
+const liveNoDvr = false;
 module.exports = new CronJob('*/30 * * * * *', function () {
 
     const folderLive = './live';
@@ -28,26 +29,61 @@ module.exports = new CronJob('*/30 * * * * *', function () {
         const lastTs = array[length];
         const subStr = lastTs.match("output(.*).ts");
 
-        const indexTs = parseInt(subStr[1]);
+        if(!subStr) return;
+
+        let indexTs = parseInt(subStr[1]);
 
         const newIndexTs = indexTs + 3;
 
-        for (let i = indexTs; i <= newIndexTs; i++) {
-            if (i === newIndexTs) {
-                data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
-            } else {
-                data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
-            }
-        }
+        // if(newIndexTs >= 10){
+        //     indexTs = 0;
 
-        fs.writeFile(file, data, err => {
-            if (err) {
-                console.error(err)
-                return
-            }
-            console.log('file written successfully');
-        });
+        // }else{
+            
+        // }
+
+        if(liveNoDvr){
+            let initLiveData = '#EXTM3U\n' +
+            '#EXT-X-VERSION:3\n' +
+            '#EXT-X-TARGETDURATION:10\n' +
+            '#EXT-X-PLAYLIST-TYPE:EVENT\n' +
+            '#EXT-X-MEDIA-SEQUENCE:' + newIndexTs +'\n' +
+            '#EXTINF:10\n';
     
+            for (let i = indexTs; i <= newIndexTs; i++) {
+                if (i === newIndexTs) {
+                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
+                } else {
+                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
+                }
+            }
+    
+            fs.writeFile(file, initLiveData, err => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+                console.log('file written successfully');
+            });
+    
+        }else{
+            for (let i = indexTs; i <= newIndexTs; i++) {
+                if (i === newIndexTs) {
+                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts`;
+                } else {
+                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts\n`;
+                }
+            }
+    
+            fs.writeFile(file, data, err => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+                console.log('file written successfully');
+            });
+        }
+        
     });
 
 });

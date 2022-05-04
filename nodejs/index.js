@@ -19,6 +19,7 @@ cron.start();
 app.use('/vod/images',express.static(__dirname + '/static/vod'));
 
 app.get('/vod/:id', (req, res) => {
+  res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
   const filePath = '.' + req.url;
 
   if (filePath.includes('.ts')) {
@@ -26,7 +27,7 @@ app.get('/vod/:id', (req, res) => {
     stream.pipe(res);
   } else {
     fs.readFile(filePath, function (error, content) {
-      res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
+      
       if (error) {
         if (error.code === 'ENOENT') {
           res.end(content, 'utf-8');
@@ -43,9 +44,30 @@ app.get('/vod/:id', (req, res) => {
 });
 
 app.get('/live/:id', (req, res) => {
+  res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
   const filePath = '.' + req.url;
   fs.readFile(filePath, function (error, content) {
-    res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
+   
+    if (error) {
+      if (error.code === 'ENOENT') {
+        res.end(content, 'utf-8');
+      }
+      else {
+        res.writeHead(500);
+        res.end('Sorry, check with the site admin for error: ' + error.code + ' ..\n');
+        res.end();
+      }
+    }
+    res.end(content, 'utf-8');
+  });
+});
+
+
+app.get('/live/output.m3u8', (req, res) => {
+  res.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
+  
+  fs.readFile('./live/output.m3u8', function (error, content) {
+   
     if (error) {
       if (error.code === 'ENOENT') {
         res.end(content, 'utf-8');
