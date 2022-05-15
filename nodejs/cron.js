@@ -4,7 +4,7 @@ const fs = require('fs');
 const createLiveFile = require('./createLiveFile.js');
 let lengthFilesTs = null;
 const liveNoDvr = false;
-module.exports = new CronJob('*/30 * * * * *', function () {
+module.exports = new CronJob('*/240 * * * * *', function () {
 
     const folderLive = './live';
     const folderTs = './vod';
@@ -33,57 +33,24 @@ module.exports = new CronJob('*/30 * * * * *', function () {
 
         let indexTs = parseInt(subStr[1]);
 
-        const newIndexTs = indexTs + 3;
+        const newIndexTs = indexTs + 5;
 
-        // if(newIndexTs >= 10){
-        //     indexTs = 0;
-
-        // }else{
-            
-        // }
-
-        if(liveNoDvr){
-            let initLiveData = '#EXTM3U\n' +
-            '#EXT-X-VERSION:3\n' +
-            '#EXT-X-TARGETDURATION:10\n' +
-            '#EXT-X-PLAYLIST-TYPE:EVENT\n' +
-            '#EXT-X-MEDIA-SEQUENCE:' + newIndexTs +'\n' +
-            '#EXTINF:10\n';
-    
-            for (let i = indexTs; i <= newIndexTs; i++) {
-                if (i === newIndexTs) {
-                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
-                } else {
-                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
-                }
+        for (let i = indexTs; i <= newIndexTs; i++) {
+            if (i === newIndexTs) {
+                data += `#EXTINF:10\nhttp://localhost:8000/vod/output${i}.ts`;
+            } else {
+                data += `#EXTINF:10\nhttp://localhost:8000/vod/output${i}.ts\n`;
             }
-    
-            fs.writeFile(file, initLiveData, err => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-                console.log('file written successfully');
-            });
-    
-        }else{
-            for (let i = indexTs; i <= newIndexTs; i++) {
-                if (i === newIndexTs) {
-                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts`;
-                } else {
-                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts\n`;
-                }
-            }
-    
-            fs.writeFile(file, data, err => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-                console.log('file written successfully');
-            });
         }
-        
+
+        fs.writeFile(file, data, err => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            console.log('file written successfully');
+        });
+    
     });
 
 });

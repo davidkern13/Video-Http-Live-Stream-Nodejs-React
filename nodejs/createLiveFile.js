@@ -11,14 +11,14 @@ module.exports = function () {
   '#EXT-X-TARGETDURATION:10\n' +
   '#EXT-X-PLAYLIST-TYPE:EVENT\n' +
   // '#EXT-X-START:0\n' +
-  '#EXT-X-MEDIA-SEQUENCE:777777777777777\n' +
+  '#EXT-X-MEDIA-SEQUENCE:1\n' +
   '#EXTINF:10\n' +
   'http://localhost:8000/vod/output0.ts\n' +
-  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
+  '#EXTINF:10\n' +
   'http://localhost:8000/vod/output1.ts\n' +
-  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
+  '#EXTINF:10\n' +
   'http://localhost:8000/vod/output2.ts\n' +
-  '#EXT-X-DISCONTINUITY\n#EXTINF:10\n' +
+  '#EXTINF:10\n' +
   'http://localhost:8000/vod/output3.ts';
 
 
