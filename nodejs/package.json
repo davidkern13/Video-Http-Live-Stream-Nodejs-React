@@ -16,6 +16,7 @@
     "cron": "^1.8.2",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "hls-server": "^1.5.0",
     "m3u8stream": "^0.8.6",

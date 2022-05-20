@@ -29,9 +29,11 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+test.js
 /live
 /output
 /vod
+/vod-short
 /videos
 /vod-thumbnails
 /static
