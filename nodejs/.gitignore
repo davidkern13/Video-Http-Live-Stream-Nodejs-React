@@ -30,6 +30,7 @@ yarn-error.log*
 .env.production.local
 
 test.js
+mov_bbb.mp4
 /live
 /output
 /vod

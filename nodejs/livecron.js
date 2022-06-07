@@ -35,13 +35,6 @@ module.exports = new CronJob('*/30 * * * * *', function () {
 
         const newIndexTs = indexTs + 3;
 
-        // if(newIndexTs >= 10){
-        //     indexTs = 0;
-
-        // }else{
-            
-        // }
-
         if(liveNoDvr){
             let initLiveData = '#EXTM3U\n' +
             '#EXT-X-VERSION:3\n' +
@@ -52,9 +45,9 @@ module.exports = new CronJob('*/30 * * * * *', function () {
     
             for (let i = indexTs; i <= newIndexTs; i++) {
                 if (i === newIndexTs) {
-                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
+                    initLiveData += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
                 } else {
-                    initLiveData += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
+                    initLiveData += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
                 }
             }
     
@@ -67,11 +60,30 @@ module.exports = new CronJob('*/30 * * * * *', function () {
             });
     
         }else{
+            if(indexTs === lastTs){
+                data += `#EXTINF:10 \nhttp://localhost:8000/vod/output${lastTs}.ts`;
+                data += `#EXT-X-DISCONTINUITY\n`;
+                data += `#EXTINF:10 \nhttp://localhost:8000/vod/output0.ts\n`;
+                data += `#EXTINF:10 \nhttp://localhost:8000/vod/output1.ts\n`;
+                data += `#EXTINF:10 \nhttp://localhost:8000/vod/output2.ts\n`;
+                data += `#EXTINF:10 \nhttp://localhost:8000/vod/output3.ts\n`;
+
+                fs.writeFile(file, data, err => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                    console.log('file written successfully');
+                });
+
+                return;
+            }
+
             for (let i = indexTs; i <= newIndexTs; i++) {
                 if (i === newIndexTs) {
-                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts`;
+                    data += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts`;
                 } else {
-                    data += `#EXT-X-DISCONTINUITY\n#EXTINF:10 \nhttp://localhost:8000/vod/output${i+10}.ts\n`;
+                    data += `#EXTINF:10 \nhttp://localhost:8000/vod/output${i}.ts\n`;
                 }
             }
     

@@ -4,7 +4,7 @@ const fs = require('fs');
 const createLiveFile = require('./createLiveFile.js');
 let lengthFilesTs = null;
 const liveNoDvr = false;
-module.exports = new CronJob('*/240 * * * * *', function () {
+module.exports = new CronJob('*/30 * * * * *', function () {
 
     const folderLive = './live';
     const folderTs = './vod';
@@ -33,7 +33,7 @@ module.exports = new CronJob('*/240 * * * * *', function () {
 
         let indexTs = parseInt(subStr[1]);
 
-        const newIndexTs = indexTs + 5;
+        const newIndexTs = indexTs + 3;
 
         for (let i = indexTs; i <= newIndexTs; i++) {
             if (i === newIndexTs) {
